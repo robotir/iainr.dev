@@ -6,7 +6,6 @@
           <h1 class="projects__header">
             Selected works
           </h1>
-
           <ProjectItem
             v-for="(item, index) in projects"
             :key="index"
@@ -15,6 +14,7 @@
             :projects-is-loaded="projectsIsLoaded"
             :open-modal="
               () => {
+                toggleNavEnabled()
                 item.visible = true
               }
             "
@@ -23,8 +23,9 @@
               v-if="item.hasModal"
               :visible="item.visible"
               :images="item.images"
-              :close="
+              :close-modal="
                 () => {
+                  toggleNavEnabled()
                   item.visible = false
                 }
               "
@@ -45,7 +46,8 @@ export default {
   components: { ProjectItem, ProjectModal },
   props: {
     // index: { type: Number, required: true },
-    projectsIsLoaded: { type: Boolean, required: true }
+    projectsIsLoaded: { type: Boolean, required: true },
+    toggleNavEnabled: { type: Function, required: true }
   },
   data() {
     return {
@@ -76,7 +78,7 @@ export default {
           images: ['eurorack-1.jpg', 'eurorack-2.jpg', 'eurorack-3.jpg']
         },
         {
-          text: 'Guitars',
+          text: 'Furniture',
           hasModal: true,
           visible: false,
           images: ['table-1.jpg', 'table-2.jpg']

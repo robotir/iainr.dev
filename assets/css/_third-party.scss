@@ -1,0 +1,19 @@
+// Vue Carousel
+.VueCarousel {
+  &-wrapper {
+    height: 65vh !important;
+  }
+
+  &-pagination {
+    position: absolute !important;
+    bottom: -6vh !important;
+  }
+
+  &-dot {
+    outline: none !important;
+
+    &--active {
+      outline: none !important;
+    }
+  }
+}

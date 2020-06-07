@@ -7,7 +7,12 @@
     >
       <div class="modal-background"></div>
       <div class="modal-content">
-        <carousel :per-page="1" :pagination-enabled="true">
+        <carousel
+          :per-page="1"
+          :pagination-enabled="true"
+          pagination-color="#000"
+          pagination-active-color="#dedede"
+        >
           <slide v-for="image in images" :key="image">
             <div class="slide-cell">
               <figure class="image is-square">
@@ -20,7 +25,7 @@
       <button
         class="modal-close is-large"
         aria-label="close"
-        @click="close()"
+        @click="closeModal()"
       ></button>
     </div>
   </transition>
@@ -42,7 +47,19 @@ export default {
   props: {
     images: { type: Array, required: true },
     visible: { type: Boolean, required: true },
-    close: { type: Function, required: true }
+    closeModal: { type: Function, required: true }
+  },
+  mounted() {
+    window.addEventListener('click', (e) => {
+      if (e.target.className === 'modal-background') {
+        this.closeModal()
+      }
+    })
+    window.addEventListener('keyup', (e) => {
+      if (e.keyCode === 27) {
+        this.closeModal()
+      }
+    })
   }
 }
 </script>
@@ -67,29 +84,15 @@ export default {
 
 .slide-cell img {
   max-height: 60vh;
-  margin-top: 5vh;
+  margin-top: 4vh;
   object-fit: contain;
 }
 
-// Vue Carousel
-/* .VueCarousel {
-  &-wrapper {
-    height: 65vh;
-  }
-
-  &-pagination {
-    position: absolute;
-    bottom: -5vh;
-  }
-
-  &-dot {
-    background-color: #000 !important;
-    outline: none !important;
-
-    &--active {
-      background-color: #dedede !important;
-      outline: none !important;
-    }
-  }
-} */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 </style>

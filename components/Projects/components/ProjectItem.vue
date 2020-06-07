@@ -1,10 +1,6 @@
 <template>
-  <div>
-    <h3
-      class="main-text"
-      :class="[{ 'main-text--animate': !projectsIsLoaded }]"
-      @click="openModal()"
-    >
+  <div :class="[{ 'item--animate': !projectsIsLoaded }]">
+    <h3 class="main-text" @click="openModal()">
       <a class="link" :href="href" target="_blank">
         {{ itemText }}
       </a>
@@ -49,7 +45,9 @@ export default {
   &:hover {
     transform: translateX(15px);
   }
+}
 
+.item {
   &--animate {
     animation: fadeInFromRightLong 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)
       both;

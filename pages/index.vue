@@ -8,13 +8,19 @@
       v-if="index === 1"
       :index="index"
       :projects-is-loaded="projectsIsLoaded"
+      :toggle-nav-enabled="toggleNavEnabled"
     />
     <Contact v-if="index === 2" :index="index" />
-    <NavArrow :font-color="fontColor" :increment="increment" />
+    <NavArrow
+      v-if="navEnabled"
+      :font-color="fontColor"
+      :increment="increment"
+    />
   </div>
 </template>
 
 <script>
+import throttle from 'lodash/throttle'
 import { createWheel } from '~/helpers/create-wheel'
 import Intro from '~/components/Intro/Intro.vue'
 import Projects from '~/components/Projects/Projects.vue'
@@ -35,7 +41,8 @@ export default {
       fontColorOptions: ['#fff', '#fff', '#0c0c0c'],
       // Used for loading different animations in Projects section
       // TODO: try rewriting this to just use the index value
-      projectsIsLoaded: false
+      projectsIsLoaded: false,
+      navEnabled: true
     }
   },
   computed: {
@@ -48,6 +55,7 @@ export default {
   },
   watch: {
     index() {
+      // TODO: Maybe move this to projects component
       if (this.index === 1) {
         // A delay is used to add a switch animation classes on the Projects
         setTimeout(() => {
@@ -64,28 +72,39 @@ export default {
     createWheel(vm)
 
     // Add event listener for up, down, right, left. Used for navigation
-    window.addEventListener('keyup', (e) => {
-      if (e.keyCode === 39 || e.keyCode === 40) {
-        this.increment()
-      } else if (e.keyCode === 37 || e.keyCode === 38) {
-        this.decrement()
-      }
-    })
+    window.addEventListener(
+      'keyup',
+      throttle((e) => {
+        if (e.keyCode === 39 || e.keyCode === 40) {
+          this.increment()
+        } else if (e.keyCode === 37 || e.keyCode === 38) {
+          this.decrement()
+        }
+      }, 600)
+    )
   },
+
   methods: {
-    increment() {
-      if (this.index === 2) {
-        this.index = 0
-      } else {
-        this.index++
+    increment: throttle(function() {
+      if (this.navEnabled) {
+        if (this.index === 2) {
+          this.index = 0
+        } else {
+          this.index++
+        }
       }
-    },
-    decrement() {
-      if (this.index === 0) {
-        this.index = 2
-      } else {
-        this.index--
+    }, 600),
+    decrement: throttle(function() {
+      if (this.navEnabled) {
+        if (this.index === 0) {
+          this.index = 2
+        } else {
+          this.index--
+        }
       }
+    }, 600),
+    toggleNavEnabled() {
+      this.navEnabled = !this.navEnabled
     }
   }
 }
