@@ -3,7 +3,13 @@
     class="index__container"
     :style="{ backgroundColor: backgroundColor, color: fontColor }"
   >
-    <Intro :index="index" />
+    <Intro v-if="index === 0" :index="index" />
+    <Projects
+      v-if="index === 1"
+      :index="index"
+      :projects-is-loaded="projectsIsLoaded"
+    />
+    <Contact v-if="index === 2" :index="index" />
     <NavArrow :font-color="fontColor" :increment="increment" />
   </div>
 </template>
@@ -11,11 +17,15 @@
 <script>
 import { createWheel } from '~/helpers/create-wheel'
 import Intro from '~/components/Intro/Intro.vue'
+import Projects from '~/components/Projects/Projects.vue'
+import Contact from '~/components/Contact/Contact.vue'
 import NavArrow from '~/components/NavArrow/NavArrow.vue'
 
 export default {
   components: {
     Intro,
+    Projects,
+    Contact,
     NavArrow
   },
   data() {
