@@ -24,14 +24,15 @@
             v-for="(item, index) in projectsWithModal"
             :key="index"
             :visible="item.modalVisible"
-            :images="item.images"
             :close-modal="
               () => {
                 toggleNavEnabled()
                 item.modalVisible = false
               }
             "
-          />
+          >
+            <ProjectCarousel :images="item.images" />
+          </ProjectModal>
         </div>
       </div>
     </section>
@@ -41,10 +42,11 @@
 <script>
 import ProjectItem from '~/components/Projects/components/ProjectItem.vue'
 import ProjectModal from '~/components/Projects/components/ProjectModal.vue'
+import ProjectCarousel from '~/components/Projects/components/ProjectCarousel.vue'
 
 export default {
   name: 'Projects',
-  components: { ProjectItem, ProjectModal },
+  components: { ProjectItem, ProjectModal, ProjectCarousel },
   props: {
     toggleNavEnabled: { type: Function, required: true }
   },
