@@ -1,11 +1,10 @@
 <template>
-  <div :class="[{ 'item--animate': !projectsIsLoaded }]">
+  <div class="item--animate">
     <h3 class="main-text" @click="openModal()">
       <a class="link" :href="href" target="_blank">
         {{ itemText }}
       </a>
     </h3>
-    <slot />
   </div>
 </template>
 
@@ -26,10 +25,6 @@ export default {
       default: () => {
         return null
       }
-    },
-    projectsIsLoaded: {
-      type: Boolean,
-      required: true
     }
   }
 }

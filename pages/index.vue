@@ -3,14 +3,12 @@
     class="index__container"
     :style="{ backgroundColor: backgroundColor, color: fontColor }"
   >
-    <Intro v-if="index === 0" :index="index" />
+    <Intro :class="{ hide: hide.intro }" />
     <Projects
-      v-if="index === 1"
-      :index="index"
-      :projects-is-loaded="projectsIsLoaded"
+      :class="{ hide: hide.projects }"
       :toggle-nav-enabled="toggleNavEnabled"
     />
-    <Contact v-if="index === 2" :index="index" />
+    <Contact :class="{ hide: hide.contact }" />
     <NavArrow
       v-if="navEnabled"
       :font-color="fontColor"
@@ -39,9 +37,6 @@ export default {
       index: 0,
       backgroundColorOptions: ['#0c0c0c', '#00a0a0', '#fff'],
       fontColorOptions: ['#fff', '#fff', '#0c0c0c'],
-      // Used for loading different animations in Projects section
-      // TODO: try rewriting this to just use the index value
-      projectsIsLoaded: false,
       navEnabled: true
     }
   },
@@ -51,18 +46,12 @@ export default {
     },
     fontColor() {
       return this.fontColorOptions[this.index]
-    }
-  },
-  watch: {
-    index() {
-      // TODO: Maybe move this to projects component
-      if (this.index === 1) {
-        // A delay is used to add a switch animation classes on the Projects
-        setTimeout(() => {
-          this.projectsIsLoaded = true
-        }, 1100)
-      } else {
-        this.projectsIsLoaded = false
+    },
+    hide() {
+      return {
+        intro: this.index !== 0,
+        projects: this.index !== 1,
+        contact: this.index !== 2
       }
     }
   },
@@ -83,7 +72,6 @@ export default {
       }, 600)
     )
   },
-
   methods: {
     increment: throttle(function() {
       if (this.navEnabled) {
@@ -103,9 +91,13 @@ export default {
         }
       }
     }, 600),
-    toggleNavEnabled() {
-      this.navEnabled = !this.navEnabled
-    }
+    toggleNavEnabled: throttle(
+      function() {
+        this.navEnabled = !this.navEnabled
+      },
+      400,
+      { trailing: false }
+    )
   }
 }
 </script>
@@ -120,5 +112,8 @@ export default {
     height: 100vh;
     transition: background-color 0.8s linear;
   }
+}
+.hide {
+  display: none;
 }
 </style>

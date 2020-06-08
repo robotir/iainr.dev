@@ -1,5 +1,5 @@
 <template>
-  <section class="intro__section intro">
+  <section class="intro__section">
     <section class="hero is-fullheight">
       <div class="hero-body">
         <div class="container intro__container">
@@ -15,13 +15,7 @@
 
 <script>
 export default {
-  name: 'Intro',
-  props: {
-    index: {
-      type: Number,
-      required: true
-    }
-  }
+  name: 'Intro'
 }
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <section class="projects__section project">
+  <section class="projects__section">
     <section class="hero is-fullheight">
       <div class="hero-body">
         <div class="container projects__container ">
@@ -11,26 +11,27 @@
             :key="index"
             :href="item.href"
             :item-text="item.text"
-            :projects-is-loaded="projectsIsLoaded"
             :open-modal="
               () => {
-                toggleNavEnabled()
-                item.visible = true
+                if (item.hasModal) {
+                  toggleNavEnabled()
+                }
+                item.modalVisible = true
               }
             "
-          >
-            <ProjectModal
-              v-if="item.hasModal"
-              :visible="item.visible"
-              :images="item.images"
-              :close-modal="
-                () => {
-                  toggleNavEnabled()
-                  item.visible = false
-                }
-              "
-            />
-          </ProjectItem>
+          />
+          <ProjectModal
+            v-for="(item, index) in projectsWithModal"
+            :key="index"
+            :visible="item.modalVisible"
+            :images="item.images"
+            :close-modal="
+              () => {
+                toggleNavEnabled()
+                item.modalVisible = false
+              }
+            "
+          />
         </div>
       </div>
     </section>
@@ -45,8 +46,6 @@ export default {
   name: 'Projects',
   components: { ProjectItem, ProjectModal },
   props: {
-    // index: { type: Number, required: true },
-    projectsIsLoaded: { type: Boolean, required: true },
     toggleNavEnabled: { type: Function, required: true }
   },
   data() {
@@ -62,7 +61,7 @@ export default {
         {
           text: 'Guitars',
           hasModal: true,
-          visible: false,
+          modalVisible: false,
           images: [
             'guitar-1.jpg',
             'guitar-2.jpg',
@@ -74,16 +73,21 @@ export default {
         {
           text: 'Eurorack',
           hasModal: true,
-          visible: false,
+          modalVisible: false,
           images: ['eurorack-1.jpg', 'eurorack-2.jpg', 'eurorack-3.jpg']
         },
         {
           text: 'Furniture',
           hasModal: true,
-          visible: false,
+          modalVisible: false,
           images: ['table-1.jpg', 'table-2.jpg']
         }
       ]
+    }
+  },
+  computed: {
+    projectsWithModal() {
+      return this.projects.filter((project) => project.hasModal === true)
     }
   }
 }

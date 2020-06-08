@@ -1,5 +1,5 @@
 <template>
-  <section class="contact__section contact">
+  <section class="contact__section">
     <section class="hero is-fullheight">
       <div class="hero-body">
         <div class="container contact__container">
@@ -40,12 +40,6 @@ export default {
   name: 'Contact',
   components: {
     ContactLink
-  },
-  props: {
-    index: {
-      type: Number,
-      required: true
-    }
   }
 }
 </script>
