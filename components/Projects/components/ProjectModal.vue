@@ -22,7 +22,6 @@
 export default {
   name: 'ProjectModal',
   props: {
-    images: { type: Array, required: true },
     visible: { type: Boolean, required: true },
     closeModal: { type: Function, required: true }
   },
